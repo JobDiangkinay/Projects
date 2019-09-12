@@ -1,5 +1,10 @@
 package com.project0.data;
 
-public class PersonRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.project0.model.Person;
+
+public interface PersonRepository extends JpaRepository<Person, Integer>{
+
+	public Person getPersonById(int id);
 }

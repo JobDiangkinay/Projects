@@ -62,6 +62,10 @@ public class Person {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public Person() {
+		
+	}
 
 	public Person(int id, String firstName, String lastName, String phoneNumber, String email) {
 		super();

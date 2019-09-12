@@ -1,17 +1,15 @@
 package com.project0.model;
 
-import java.util.ArrayList;
-import java.util.Set;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "Accounts")
@@ -22,26 +20,29 @@ public class Account {
 	@Column(name = "id")
 	private int id;
 	@Column(name = "username")
-	private String userName;
-	@Column(name = "password")
-	private String password;
+	private String username;
 	@Column(name = "usertype")
 	private String accountType;
-	@OneToOne
+	@Column(name = "saltpassword")
+	private byte[] saltPassword;
+	@Column(name = "hashpassword")
+	private byte[] hashPassword;
+	@OneToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name = "person")
 	private Person person;
+	@Transient
+	private String password;
 	
-	public Account() {
-		
+	public String getPassword() {
+		return password;
 	}
 
-	public Account(int id, String userName, String password, String accountType, Person person) {
-		super();
-		this.id = id;
-		this.userName = userName;
+	public void setPassword(String password) {
 		this.password = password;
-		this.accountType = accountType;
-		this.person = person;
+	}
+
+	public Account() {
+		
 	}
 
 	public int getId() {
@@ -53,19 +54,11 @@ public class Account {
 	}
 
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
+		this.username = userName;
 	}
 
 	public String getAccountType() {
@@ -76,11 +69,38 @@ public class Account {
 		this.accountType = accountType;
 	}
 
+	public byte[] getSaltPassword() {
+		return saltPassword;
+	}
+
+	public void setSaltPassword(byte[] saltPassword) {
+		this.saltPassword = saltPassword;
+	}
+
+	public byte[] getHashPassword() {
+		return hashPassword;
+	}
+
+	public void setHashPassword(byte[] hashPassword) {
+		this.hashPassword = hashPassword;
+	}
+
 	public Person getPerson() {
 		return person;
 	}
 
 	public void setPerson(Person person) {
+		this.person = person;
+	}
+
+	public Account(int id, String userName, String accountType, byte[] saltPassword, byte[] hashPassword,
+			Person person) {
+		super();
+		this.id = id;
+		this.username = userName;
+		this.accountType = accountType;
+		this.saltPassword = saltPassword;
+		this.hashPassword = hashPassword;
 		this.person = person;
 	}
 
